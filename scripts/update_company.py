@@ -59,7 +59,9 @@ for i in stock_list:
     except: pass
     try: company.board_lot = int(stock_list[i]['Board Lot'][0].replace(',',''))
     except: pass
-    try: company.listing_date = stock_list[i]['Listing Date'][0].replace('/','-')
+    try:
+        if company.list_date is not '-':
+            company.listing_date = stock_list[i]['Listing Date'][0].replace('/','-')
     except: pass
     try: company.auth_capital = int(stock_list[i]['Authorized Capital(share)'][0].replace(',',''))
     except: pass
