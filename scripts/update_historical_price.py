@@ -37,19 +37,15 @@ def get_historical_price(stock_id, start_date, end_date, frequency):
     df = df[1:]
     df['Date'] = pd.to_datetime(pd.Series(df['Date']))
 
-    # frequency operation
-    if frequency is 'weekly':
-        df = df.groupby([df.Date.dt.strftime('%Y'), df.Date.dt.strftime('%W')]).last()
-    elif frequency is 'monthly':
-        df = df.groupby(df.Date.dt.strftime('%Y-%m')).last()
-
     # Indexing Date
     df.index = df['Date']
     df.drop('Date', axis=1, inplace=True)
 
     df = df[df.notnull()].dropna()
+    print(df)
     df = df[df['Volume'] != '0']
     for i in df.columns.values:
+        df[i] = df[i].notnull()
         df[i] = df[i].astype(float)
     df = df.sort_index(ascending=True)
 
@@ -60,18 +56,20 @@ for i in stock_list:
     if int(i) < 10: stock_id = '000' + str(i)
     elif int(i) < 100: stock_id = '00' + str(i)
     elif int(i) < 1000: stock_id = '0' + str(i)
-
-    df = get_historical_price(stock_id, '2015-1-1', '2017-10-20', 'daily')
+    listing_date = Company.objects.get(stock_id = i).listing_date.strftime('%Y-%m-%d')
+    df = get_historical_price(stock_id, listing_date, '2017-10-20', 'daily')
     print(df)
     for a in range(0, df['Open'].count()):
         Historical_Price.objects.get_or_create(stock_id = Company.objects.get(stock_id=i), date = df.index[a])
         price = Historical_Price.objects.filter(stock_id = Company.objects.get(stock_id=i), date = df.index[a])
         # ratio = Ratio.objects.filter(RAT_COM_StockCode = code, RAT_Year = stock_list[i]['RAT_Year'][a])
-        try:
-            price.update(open = df['Open'][a])
-            price.update(low = df['Low'][a])
-            price.update(close = df['Close'][a])
-            price.update(adj_close = df['Adj Close'][a])
-            price.update(volume = df['Volume'][a])
-        except:
-            continue
+        try: price.update(open = df['Open'][a])
+        except: continue
+        try: price.update(low = df['Low'][a])
+        except: continue
+        try: price.update(close = df['Close'][a])
+        except: continue
+        try: price.update(adj_close = df['Adj Close'][a])
+        except: continue
+        try: price.update(volume = df['Volume'][a])
+        except: continue
