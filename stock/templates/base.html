@@ -281,6 +281,15 @@
       $('.right_col').click(function() {
         $('ul.nav.child_menu').hide();
       });
+
+      $(document).ready(function(){
+
+        $('.child_menu').each(function(){
+          if($(this).is(":visible")){
+            $(this).toggle();
+          };
+        });
+      });
     </script>
   </body>
 </html>
