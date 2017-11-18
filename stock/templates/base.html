@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gentelella Alela! | </title>
+    <title>Jason's stock machine</title>
     {% load staticfiles %}
 
     <!-- Bootstrap -->
@@ -32,13 +32,13 @@
     {% endblock %}
   </head>
 
-  <body class="nav-md">
+  <body class="nav-sm {% block body_class %}{% endblock %}">
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="/" class="site_title"><i class="fa fa-money"></i> <span>Jason's Stock machine</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -70,8 +70,20 @@
                     </ul>
                   </li>
 
-                  <li><a href="/portfoflio"><i class="fa fa-list-alt"></i> Porfolio</a>
-                  </li>
+                  <li><a href="/chartviewer"><i class="fa fa-bar-chart"></i> Chart Viewer </a></li>
+
+
+                  <!--  M E N U   :   B A C K T E S T    -->
+                  <!--<li><a><i class="fa fa-cubes"></i> Backtest <span class="fa fa-chevron-down"></span></a>-->
+                    <!--<ul class="nav child_menu">-->
+                      <!--&lt;!&ndash;<li><a href="/model/create">Create model</a></li>&ndash;&gt;-->
+
+                      <!--{% for backtest in backtests %}-->
+                      <!--<li><a href="/backtest/{{ backtest.backtest_id }}">{{ backtest.backtest_id }}</a></li>-->
+                      <!--{% endfor %}-->
+
+                    <!--</ul>-->
+                  <!--</li>-->
 
                   <li><a><i class="fa fa-cubes"></i> Models <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -85,14 +97,11 @@
                   </li>
 
 
-                  <li><a><i class="fa fa-filter"></i> Filter <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="general_elements.html">Create Filter</a></li>
-                    </ul>
-                  </li>
-
-                  <!--<li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>-->
-                <!---->
+                  <!--<li><a><i class="fa fa-filter"></i> Filter <span class="fa fa-chevron-down"></span></a>-->
+                    <!--<ul class="nav child_menu">-->
+                      <!--<li><a href="general_elements.html">Create Filter</a></li>-->
+                    <!--</ul>-->
+                  <!--</li>-->
 
                 </ul>
               </div>
@@ -130,10 +139,11 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   {% if user.is_authenticated %}
-                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">{{ user.username }}
-                    <span class=" fa fa-angle-down"></span>
-                  </a>
+                  <!--<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
+                  <!--<img src="images/img.jpg" alt="">-->
+                  <a>{{ user.username }}</a>
+                    <!--<span class=" fa fa-angle-down"></span>-->
+                  <!--</a>-->
                   {% else %}
                   <a href="/login">LOGIN</a>
                   {% endif %}
@@ -151,10 +161,10 @@
                 </li>
 
                 <li role="presentation" class="dropdown">
-                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">6</span>
-                  </a>
+                  <!--<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">-->
+                    <!--<i class="fa fa-envelope-o"></i>-->
+                    <!--<span class="badge bg-green">6</span>-->
+                  <!--</a>-->
                   <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
                     <li>
                       <a>
@@ -265,7 +275,12 @@
     {% endblock %}
     <!-- Custom Theme Scripts -->
     <script src="{% static 'build/js/custom.min.js' %}"></script>
+    <script>
 
+      $('.right_col').click(function() {
+        $('ul.nav.child_menu').hide();
+      });
+    </script>
   </body>
 </html>
 

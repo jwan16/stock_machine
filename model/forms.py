@@ -12,7 +12,7 @@ from django.db.models.manager import Manager
 class CreateModelParamForm(forms.ModelForm):
     class Meta:
         model = Model_param
-        fields = ('model', 'indicator', 'param1', 'param2', 'param3')
+        fields = ('model', 'indicator')
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(CreateModelParamForm, self).save(commit=False)

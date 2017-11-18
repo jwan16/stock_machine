@@ -6,7 +6,12 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Tables <small>Some examples to get you started</small></h3>
+                <div id="model_name_display">
+                <h3>{{ model.name }} <small><a href="#" id="edit_model_icon"><i  class="glyphicon glyphicon-edit"></i></a></small></h3>
+                </div>
+                <div id="model_name_edit"  style="display:none">
+                  <input id="model_editted_name" model_id="{{ model.model_id }}" value="{{ model.name }}" style="font-size:20px" />
+                </div>
               </div>
 
               <div class="title_right">
@@ -20,12 +25,14 @@
                 </div>
               </div>
             </div>
-
+              {% csrf_token %}
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Indicators</h2>
                     <ul class="nav navbar-right panel_toolbox">
+                      {% csrf_token %}
+                      <li><a class="param_create" href=""><i class="fa fa-plus"></i></a>
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
                       <li class="dropdown">
@@ -49,17 +56,12 @@
                       <table class="table table-striped jambo_table bulk_action">
                         <thead>
                           <tr class="headings">
-                            <th>
-                              <input type="checkbox" id="check-all" class="flat">
-                            </th>
-                            <th class="column-title">Name</th>
-                            <th class="column-title">Date Created</th>
-                            <th class="column-title">Param 1</th>
-                            <th class="column-title">Param 2</th>
-                            <th class="column-title">Param 3</th>
-                            <th class="column-title">Param 4</th>
-                            <th class="column-title">Param 5</th>
-                            <th class="column-title no-link last"><span class="nobr">Action</span>
+                            <th class="column-title">#</th>
+                            <th class="column-title">Indicator</th>
+                            <th class="column-title">Operator</th>
+                            <th class="column-title">Compare Type</th>
+                            <th class="column-title">Parameter</th>
+                            <th class="column-title no-link"><span class="nobr">Action</span>
                             </th>
                             <th class="bulk-actions" colspan="7">
                               <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
@@ -69,263 +71,156 @@
 
 
                         <tbody>
-                        {% for param in param_list %}
+                          {% for p in param_list %}
                           <tr class="even pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
+                            <td class="param_id">{{ p.param_id }}</td>
+                            <td class=" " style="width:340px">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <select param_id='{{ p.param_id }}' field='indicator' class="form-control" style="height:28px; width:100%">
+                                    {% for i in indicator_list %}
+                                    <option {% if i == p.indicator %} selected {% endif %}>{{ i.name }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                                <div class="col-md-6">
+                                  <input param_id='{{ p.param_id }}' field="i_param1" style="width:30%; height: 28px" {% if p.indicator.param1 and p.i_param1 %}value="{{ p.i_param1 }}"{% endif %} {% if p.indicator.param  %}placeholder="{{ p.indicator.param1 }}{% endif %}"/>
+                                  <input param_id='{{ p.param_id }}' field="i_param2" style="width:30%; height: 28px" {% if p.indicator.param2 and p.i_param2  %}value="{{ p.i_param2 }}"{% endif %} {% if p.indicator.param2  %}placeholder="{{ p.indicator.param2 }}{% endif %}"/>
+                                  <input param_id='{{ p.param_id }}' field="i_param3" style="width:30%; height: 28px" {% if p.indicator.param3 and p.i_param3  %}value="{{ p.i_param3 }}"{% endif %} {% if p.indicator.param3  %}placeholder="{{ p.indicator.param3 }}{% endif %}"/>
+                                </div>
+                              </div>
+
                             </td>
-                            <td class=" ">{{ param.e_name }}</td>
-                            <td class=" ">{{ param.dateCreated}} </td>
-                            <td class=" ">{{ param.param1 }}</td>
-                            <td class=" ">{{ param.param2 }}</td>
-                            <td class=" ">{{ param.param3 }}</td>
-                            <td class=" ">{{ param.param4 }}</td>
-                            <td class="a-right a-right ">{{ param.param5 }}</td>
-                            <td class=" last"><a href="#">View</a>
+
+                            <!-- Operator -->
+                            <td class=" ">
+                              <select param_id='{{ p.param_id }}' field="operator" class="" style="height:28px">
+                                <option {% if p.operator == '>' %}selected{% endif %} >></option>
+                                <option {% if p.operator == '>=' %}selected{% endif %} >>=</option>
+                                <option {% if p.operator == '<' %}selected{% endif %} ><</option>
+                                <option {% if p.operator == '<=' %}selected{% endif %} ><=</option>
+                                <option {% if p.operator == '=' %}selected{% endif %} >=</option>
+                                <option {% if p.operator == '!=' %}selected{% endif %} >!=</option>
+                              </select>
+                              <input param_id='{{ p.param_id }}' field="eq_diff" placeholder="difference" style="width:50px" value="{{ p.eq_diff }}" />
+                            </td>
+
+                            <!-- Param type -->
+                            <td class=" ">
+                              <select param_id='{{ p.param_id }}' field="param_type" class="param_type form-control" style="height:28px">
+                                <option {% if p.param_type == 'value' %}selected{% endif %}>value</option>
+                                <option {% if p.param_type == 'indicator' %}selected{% endif %}>indicator</option>
+                              </select>
+                            </td>
+
+                            <!-- Compare value / indicator-->
+                            <td style="width:340px">
+                              <input param_id='{{ p.param_id }}' field="value" class="param_value" style="height:28px; width:300px" type="text" value="{{ p.value }}"/>
+
+                              <div param_id='{{ p.param_id }}'  class="param_indicator row">
+                                <div class="col-md-6">
+                                  <select param_id='{{ p.param_id }}' field="compare_indicator" class="form-control" style="height:28px; width:100%">
+                                    {% for i in indicator_list %}
+                                    <option {% if i == p.compare_indicator %} selected {% endif %}>{{ i.name }}</option>
+                                    {% endfor %}
+                                  </select>
+                                  </div>
+                                <div class="col-md-6">
+                                  <input param_id='{{ p.param_id }}' field="ci_param1" style="width:30%; height: 28px" {% if p.ci_param1 and p.ci_param1  %}value="{{ p.ci_param1 }}"{% endif %} {% if p.compare_indicator.param1 %}placeholder="{{ p.compare_indicator.param1 }}{% endif %}"/>
+                                  <input param_id='{{ p.param_id }}' field="ci_param2" style="width:30%; height: 28px" {% if p.ci_param2 and p.ci_param2  %}value="{{ p.ci_param2 }}"{% endif %} {% if p.compare_indicator.param2 %}placeholder="{{ p.compare_indicator.param2 }}{% endif %}"/>
+                                  <input param_id='{{ p.param_id }}' field="ci_param3" style="width:30%; height: 28px" {% if p.ci_param3 and p.i_param3  %}value="{{ p.ci_param3 }}"{% endif %} {% if p.compare_indicator.param3 %}placeholder="{{ p.compare_indicator.param3 }}{% endif %}"/>
+                                </div>
+                              </div>
+                            </td>
+
+                            <!-- Delete param -->
+                            <td>
+                              <a class="param_delete" param_id="{{ p.param_id }}" href=""><i class="fa fa-close"></i></a>
                             </td>
                           </tr>
+                          {% endfor %}
+
+                        </tbody>
+                      </table>
+                      <div><button id="param_update" type="submit" class="btn btn-success" style="float:right">Save</button></div>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="clearfix"></div>
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Run model</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="x_content">
+                    <div class="col-md-4"><button id="run_model" model_id="{{ model.model_id }}" class="btn btn-success">Submit</button></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="clearfix"></div>
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Responsive example<small>Users</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                      Responsive is an extension for DataTables that resolves that problem by optimising the table's layout for different screen sizes through the dynamic insertion and removal of columns from the table.
+                    </p>
+
+                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Run date</th>
+                          <th>Status</th>
+                          <th>Result Count</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for report in report_list %}
+                        <tr>
+                          <td>{{ report.report_id }}</td>
+                          <td>{{ report.rundate }}</td>
+                          <td>{{ report.status }}</td>
+                          <td>{{ report.result_count }}</td>
+                          <td>View</td>
+                        </tr>
                         {% endfor %}
-                        </tbody>
-                      </table>
-                    </div>
-
-
-                  </div>
-                </div>
-              </div>
-
-              <div class="clearfix"></div>
-
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Results</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Add Indicator</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-
-                  <div class="x_content">
-                  <div class="col-md-4">
-                    Date Range Picker
-                    <form class="form-horizontal">
-                      <fieldset>
-                        <div class="control-group">
-                          <div class="controls">
-                            <div class="input-prepend input-group">
-                              <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                              <input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="01/01/2016 - 01/25/2016" />
-                            </div>
-                          </div>
-                        </div>
-                      </fieldset>
-                    </form>
-                  </div>
-                      <div class="col-md-4"><button type="submit" class="btn btn-success">Submit</button></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="clearfix"></div>
-
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Results</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Add Indicator</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-
-                  <div class="x_content">
-
-                    <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>
-
-                    <div class="table-responsive">
-                      <table class="table table-striped jambo_table bulk_action">
-                        <thead>
-                          <tr class="headings">
-                            <th>
-                              <input type="checkbox" id="check-all" class="flat">
-                            </th>
-                            <th class="column-title">Invoice </th>
-                            <th class="column-title">Invoice Date </th>
-                            <th class="column-title">Order </th>
-                            <th class="column-title">Bill to Name </th>
-                            <th class="column-title">Status </th>
-                            <th class="column-title">Amount </th>
-                            <th class="column-title no-link last"><span class="nobr">Action</span>
-                            </th>
-                            <th class="bulk-actions" colspan="7">
-                              <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                            </th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          <tr class="even pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000040</td>
-                            <td class=" ">May 23, 2014 11:47:56 PM </td>
-                            <td class=" ">121000210 <i class="success fa fa-long-arrow-up"></i></td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right ">$7.45</td>
-                            <td class=" last"><a href="#">View</a>
-                            </td>
-                          </tr>
-                          <tr class="odd pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000039</td>
-                            <td class=" ">May 23, 2014 11:30:12 PM</td>
-                            <td class=" ">121000208 <i class="success fa fa-long-arrow-up"></i>
-                            </td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right ">$741.20</td>
-                            <td class=" last"><a href="#">View</a>
-                            </td>
-                          </tr>
-                          <tr class="even pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000038</td>
-                            <td class=" ">May 24, 2014 10:55:33 PM</td>
-                            <td class=" ">121000203 <i class="success fa fa-long-arrow-up"></i>
-                            </td>
-                            <td class=" ">Mike Smith</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right ">$432.26</td>
-                            <td class=" last"><a href="#">View</a>
-                            </td>
-                          </tr>
-                          <tr class="odd pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000037</td>
-                            <td class=" ">May 24, 2014 10:52:44 PM</td>
-                            <td class=" ">121000204</td>
-                            <td class=" ">Mike Smith</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right ">$333.21</td>
-                            <td class=" last"><a href="#">View</a>
-                            </td>
-                          </tr>
-                          <tr class="even pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000040</td>
-                            <td class=" ">May 24, 2014 11:47:56 PM </td>
-                            <td class=" ">121000210</td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right ">$7.45</td>
-                            <td class=" last"><a href="#">View</a>
-                            </td>
-                          </tr>
-                          <tr class="odd pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000039</td>
-                            <td class=" ">May 26, 2014 11:30:12 PM</td>
-                            <td class=" ">121000208 <i class="error fa fa-long-arrow-down"></i>
-                            </td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right ">$741.20</td>
-                            <td class=" last"><a href="#">View</a>
-                            </td>
-                          </tr>
-                          <tr class="even pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000038</td>
-                            <td class=" ">May 26, 2014 10:55:33 PM</td>
-                            <td class=" ">121000203</td>
-                            <td class=" ">Mike Smith</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right ">$432.26</td>
-                            <td class=" last"><a href="#">View</a>
-                            </td>
-                          </tr>
-                          <tr class="odd pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000037</td>
-                            <td class=" ">May 26, 2014 10:52:44 PM</td>
-                            <td class=" ">121000204</td>
-                            <td class=" ">Mike Smith</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right ">$333.21</td>
-                            <td class=" last"><a href="#">View</a>
-                            </td>
-                          </tr>
-
-                          <tr class="even pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000040</td>
-                            <td class=" ">May 27, 2014 11:47:56 PM </td>
-                            <td class=" ">121000210</td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right ">$7.45</td>
-                            <td class=" last"><a href="#">View</a>
-                            </td>
-                          </tr>
-                          <tr class="odd pointer">
-                            <td class="a-center ">
-                              <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td class=" ">121000039</td>
-                            <td class=" ">May 28, 2014 11:30:12 PM</td>
-                            <td class=" ">121000208</td>
-                            <td class=" ">John Blank L</td>
-                            <td class=" ">Paid</td>
-                            <td class="a-right a-right ">$741.20</td>
-                            <td class=" last"><a href="#">View</a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                      </tbody>
+                    </table>
 
 
                   </div>
@@ -344,4 +239,170 @@
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
+
+
+
+{% endblock %}
+
+{% block more_js %}
+<!-- Jquery Plugin -->
+<script>
+(function($) {
+  $.fn.onEnter = function(func) {
+      this.bind('keypress', function(e) {
+          if (e.keyCode == 13) func.apply(this, [e]);
+      });
+      return this;
+   };
+})(jQuery);
+</script>
+<script>
+
+$(document).ready(function(){
+
+  $('.param_type').each(function(){
+  param_id = $(this).attr('param_id');
+
+  if ($(this).find('option:selected').val() == 'value'){
+    $('.param_indicator[param_id=' + param_id + ']').hide();
+  } else if($(this).find('option:selected').val() == 'indicator') {
+    $('.param_value[param_id=' + param_id + ']').hide();
+  };
+  });
+
+  $('[field="operator"]').each(function(){
+  changed_id = $(this).attr('param_id');
+  if ($(this).val() == '='){
+    $('[field="eq_diff"][param_id='+changed_id+']').show();
+  } else {
+    $('[field="eq_diff"][param_id='+changed_id+']').hide();
+  };
+});
+
+});
+
+$('.param_type').on("change", function(){
+  changed_id = $(this).attr('param_id');
+  if ($(this).val() == 'value'){
+    $('.param_indicator[param_id='+changed_id+']').hide();
+    $('.param_value[param_id=' + changed_id + ']').show();
+  } else if($(this).val() == 'indicator') {
+    $('.param_indicator[param_id='+changed_id+']').show();
+    $('.param_value[param_id=' + changed_id + ']').hide();
+  };
+});
+
+$('[field="operator"]').on("change", function(){
+  changed_id = $(this).attr('param_id');
+  if ($(this).val() == '='){
+    $('[field="eq_diff"][param_id='+changed_id+']').show();
+  } else {
+    $('[field="eq_diff"][param_id='+changed_id+']').hide();
+  };
+});
+
+$('.param_create').click(function () {
+  var model_id = {{ model.model_id }};
+  console.log(model_id);
+    $.ajax({
+        url: "/model/createparam/",
+        type: "POST",
+        data: {
+            "model_id": model_id,
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken").val(),
+        },
+        success: function(data){
+             window.location.assign('');
+        }
+    });
+});
+
+
+// Update Parameters
+$('#param_update').click(function () {
+  var input = [];
+  $(".param_id" ).each(function() {
+    param_id = $(this).text();
+    var instance = {};
+    instance['param_id'] = param_id;
+    console.log(instance);
+    $("[param_id='" + param_id + "'][field]").each(function(){
+      instance[$(this).attr('field')] = $(this).val()
+    });
+    input.push(instance);
+  });
+  console.log(input);
+  $.ajax({
+    url: "/model/updateparam/",
+    type: "POST",
+    data: {
+        "input": JSON.stringify(input),
+        csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken").val(),
+    },
+    success: function(data){
+         window.location.assign('');
+    }
+  });
+});
+
+$('.param_delete').click(function () {
+  var param_id = $(this).attr('param_id');
+  console.log(param_id);
+  $.ajax({
+      url: "/model/deleteparam/",
+      type: "POST",
+      data: {
+          "param_id": param_id,
+          csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken").val(),
+      },
+      success: function(data){
+           window.location.assign('');
+      }
+  });
+});
+
+$('#run_model').click(function () {
+  var model_id = $(this).attr('model_id');
+  $.ajax({
+      url: "/model/run/",
+      type: "POST",
+      data: {
+          "model_id": model_id,
+          csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken").val(),
+      },
+      success: function(data){
+           window.location.assign('');
+      }
+  });
+});
+
+$('#edit_model_icon').click(function(){
+  $('#model_name_display').hide();
+  $('#model_name_edit').show();
+});
+
+$(function() {
+    console.log($("#model_editted_name"));
+    $("#model_editted_name").onEnter( function() {
+    var model_id = $(this).attr('model_id');
+    var name = $(this).val();
+      $.ajax({
+      url: "/model/updatename/",
+      type: "POST",
+      data: {
+          "name": name,
+          "model_id": model_id,
+          csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken").val(),
+      },
+      success: function(data){
+           window.location.assign('');
+      }
+  });
+    });
+});
+
+</script>
+
+
+
 {% endblock %}

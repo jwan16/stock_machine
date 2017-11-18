@@ -31,6 +31,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'chartviewer.apps.ChartviewerConfig',
+    'backtest.apps.BacktestConfig',
     'filter.apps.FilterConfig',
     'model.apps.ModelConfig',
     'stock.apps.StockConfig',
@@ -131,3 +133,14 @@ MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login'
+
+
+# Set sys time
+TIME_ZONE = 'Hongkong'
+
+# Email server
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'jasonstockmachine@gmail.com'
+EMAIL_HOST_PASSWORD = 'jason0001'
+EMAIL_USE_SSL = True

@@ -17,6 +17,11 @@ urlpatterns = [
     # filter
     url(r'^filter/', include('filter.urls')),
 
+    # Backtest
+    url(r'^backtest/', include('backtest.urls')),
+
+    # Chartviewer
+    url(r'^chartviewer/', include('chartviewer.urls'))
 ]
 
 if settings.DEBUG:

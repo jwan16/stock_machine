@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed
 from django.urls import reverse_lazy
 import json
 from django.apps import apps
+import os
 
 # Create your views here.
 def get_filtered_stock_list(param_name, operator, value):
@@ -20,6 +21,7 @@ class FilterDetail(generic.DetailView):
     template_name = 'filter.html'
 
     def get_context_data(self, **kwargs):
+        os.system('python3 manage.py runscript test yoyoyo')
         # Call the base implementation first to get a context
         context = super(FilterDetail, self).get_context_data(**kwargs)
         context['param_list'] = FilterParam.objects.filter(filter_id=self.kwargs.get('pk'))
@@ -58,6 +60,7 @@ def CreateParam(request):
         return HttpResponseNotAllowed(['POST'])
     filter_id = Filter.objects.get(filter_id=request.POST.get("filter_id"))
     param_name = Parameter.objects.get(name = request.POST.get("param_name"))
+
     FilterParam.objects.create(filter_id=filter_id, param_name=param_name)
     return HttpResponse('ok')
 
