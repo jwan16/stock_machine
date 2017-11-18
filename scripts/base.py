@@ -77,7 +77,25 @@ def get_macd(stock_id, start_date, end_date, frequency, days1, days2):
     
     # get data after start date
     df = df[df.index >= datetime.datetime.strptime(start_date, '%Y-%m-%d')]
-    return df[['macd', 'ema9']]
+    return df['macd']
+
+
+def get_macd_ema9(stock_id, start_date, end_date, frequency, days1, days2):
+    d = datetime.datetime.strptime(start_date, '%Y-%m-%d') - datetime.timedelta(days=30 * days2)
+    d = d.strftime('%Y-%m-%d')
+    df = get_historical_price(stock_id, d, end_date, frequency)
+    ewm1 = get_ewm(stock_id, d, end_date, frequency, days1)
+    ewm2 = get_ewm(stock_id, d, end_date, frequency, days2)
+    df['macd'] = ewm1 - ewm2
+
+    # EMA of macd
+    sma = df['macd'].rolling(window=9, min_periods=9).mean()[:9]
+    rest = df['macd'][9:]
+    df['ema9'] = pd.concat([sma, rest]).ewm(span=9, adjust=False).mean()
+
+    # get data after start date
+    df = df[df.index >= datetime.datetime.strptime(start_date, '%Y-%m-%d')]
+    return df['ema9']
 
 def get_rsi(stock_id, start_date, end_date, frequency, days):
     d = datetime.datetime.strptime(start_date, '%Y-%m-%d') - datetime.timedelta(days= 3 * days)

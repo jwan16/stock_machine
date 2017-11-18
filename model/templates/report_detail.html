@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block body_class %}footer_fixed{% endblock %}
+
+{% block nav_menu %}
+
+<li class="">
+<a href='#' id='collapse' class="user-profile dropdown-toggle" >
+    Collapse all
+</a>
+</li>
+{% endblock %}
+
+{% block body %}
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+
+
+    {% for result in result_list %}
+    <div id='{{ result.id }}' class="col-md-6 col-sm-6 col-xs-12">
+        <div id='chart{{ result.id }}' class="x_panel">
+          <div class="x_title">
+            <a result_id="{{ result.id }}" class="more_detail"><h2></i> {{ result.name }} ({{ result.id }})</h2></a>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Settings 1</a>
+                  </li>
+                  <li><a href="#">Settings 2</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <!-- All -->
+          <div result_id="{{ result.id }}" class="all" style="display:none">
+            {% for url in result.all %}
+              <div class="col-md-6">
+                  <img src="{{ url }}" style="width:100%"/>
+              </div>
+            {% endfor %}
+          </div>
+          <!-- Preview -->
+          <div result_id="{{ result.id }}" class="preview">
+            <img src="{{ result.preview }}" style="width:100%;"/>
+          </div>
+
+
+
+          </div>
+              <!---->
+          </div>
+        </div>
+
+    {% endfor %}
+
+    <div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<!-- footer content -->
+<footer>
+
+  <div id='footer' class="pull-right">
+      {% for result in result_list %}
+        <a href="#{{ result.id }}">{{ result.id }}  </a>
+      {% endfor %}
+  </div>
+
+  <div class="clearfix"></div>
+</footer>
+
+{% endblock %}
+{% block more_js %}
+<script>
+$('.more_detail').click(function(){
+    result_id = $(this).attr('result_id');
+
+    $('#'+result_id).toggleClass('col-md-6 col-md-12');
+    $('.all[result_id='+result_id+']').toggle();
+    $('.preview[result_id='+result_id+']').toggle();
+    document.getElementById(result_id).scrollIntoView();
+});
+$('#collapse').click(function(){
+    $('i.fa-chevron-up').toggleClass('fa-chevron-up fa-chevron-down');
+    $('.x_content').toggle();
+});
+</script>
+{% endblock %}

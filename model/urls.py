@@ -7,7 +7,7 @@ app_name = 'model'
 
 urlpatterns = [
     url(r'^(?P<pk>[0-9]+)$', ModelDetail.as_view(), name='detail'),
-    url(r'^(?P<pk>[0-9]+)$', ReportDetail.as_view(), name='report_detail'),
+    url(r'^report/(?P<pk>[0-9]+)$', ReportDetail.as_view(), name='report_detail'),
     # url(r'^(?P<pk>[0-9]+)/create_param$', ModelParamCreate.as_view(), name='detail'),
 
     # Model

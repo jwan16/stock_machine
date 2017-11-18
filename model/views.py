@@ -14,6 +14,16 @@ import os
 import json
 
 
+def add_zero(stock_id):
+    if len(stock_id) < 2:
+        stock_id = '000' + str(stock_id)
+    elif len(stock_id) < 3:
+        stock_id = '00' + str(stock_id)
+    elif len(stock_id) < 4:
+        stock_id = '0' + str(stock_id)
+    else:
+        stock_id = str(stock_id)
+    return stock_id
 
 
 class ModelDetail(generic.DetailView):
@@ -34,6 +44,67 @@ class ModelDetail(generic.DetailView):
 class ReportDetail(generic.DetailView):
     model = Report
     template_name = 'report_detail.html'
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ReportDetail, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        report_id = self.kwargs.get('pk')
+        stock_list = Report.objects.get(report_id = report_id).result_stock_id.split(',')
+        param = {'fontsize': 12,
+                 '15MinDelay': 'T',
+                 'lang': 1,
+                 'titlestyle': 1,
+                 'vol': 1,
+                 'Indicator': 1,
+                 'indpara1': 10,
+                 'indpara2': 20,
+                 'indpara3': 50,
+                 'indpara4': 100,
+                 'indpara5': 150,
+                 'subChart1': 2,
+                 'ref1para1': 14,
+                 'ref1para2': 0,
+                 'ref1para3': 0,
+                 'subChart2': 3,
+                 'ref2para1': 12,
+                 'ref2para2': 26,
+                 'ref2para3': 9,
+                 'subChart3': 7,
+                 'ref3para1': 14,
+                 'ref3para2': 3,
+                 'ref3para3': 0,
+                 'scheme': 1,
+                 'com': 100,
+                 'chartwidth': 673,
+                 'chartheight': 820,
+                 'type': 1,
+                 'logoStyle': 1,
+                 }
+        result_list = []
+        base_url = 'http://charts.aastocks.com/servlet/Charts?'
+        for stock_id in stock_list:
+            url_list = []
+            result = {}
+            param['stockid'] = str(stock_id) + '.hk'
+            url = base_url
+            for i in param:
+                url = url + str(i) + '=' + str(param[i]) + '&'
+
+            result['id'] = add_zero(stock_id) + 'hk'
+            result['preview'] = url +'period=9'
+            for a in [9, 13,2061, 2060]:
+                url_list.append(url + 'period=' + str(a) + '&')
+            result['all'] = url_list
+            try:
+                result['name'] = Company.objects.get(stock_id=add_zero(stock_id)).name
+            except:
+                result['name'] = ''
+
+            result_list.append(result)
+        context = {
+            'result_list': result_list,
+        }
+        return context
 
 class ModelParamCreate(generic.CreateView):
     model = Model_param

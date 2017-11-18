@@ -46,14 +46,15 @@ def record_param_name(param_name, param1, param2, param3):
         result = param_name + '(' + param1 + ')'
     return result
 
-stock_list = [add_zero(i.stock_id) for i in Company.objects.distinct()]
+stock_list = [add_zero(str(i)) for i in range(1,500)]
 function_list = {
     'Moving Average': get_moving_avg,
     'Stochastic(k_fast)': get_stochastic_k_fast,
     'Stochastic(k_slow)': get_stochastic_k_slow,
     'Stochastic(d_fast)': get_stochastic_k_slow,
     'Stochastic(d_slow)': get_stochastic_d_slow,
-
+    'MACD': get_macd,
+    'MACD(EMA9)': get_macd_ema9,
 }
 
 def run(*script_args):
@@ -75,19 +76,19 @@ def run(*script_args):
         argsdict = {
             'start_date': '2017-10-20',
             'end_date': end_date,
-            'frequency': 'daily',
+            'frequency': 'weekly',
         }
         argsdict[param.indicator.param1] = int(param.i_param1)
         try: argsdict[param.indicator.param2] = int(param.i_param2)
         except: None
 
             # argsdict[param.indicator.param2] = int(param.i_param2)
-        print(argsdict)
+
 
         for stock_id in stock_list:
             print('Analyzing param: ' + str(param.param_id) + ' stock_id: ' + str(stock_id))
             argsdict['stock_id'] = stock_id
-            print(function_list[param.indicator.name](**argsdict).sort_index(ascending=False).iloc[1])
+
             try:
                 df.ix[stock_id,'col1'] = float(function_list[param.indicator.name](**argsdict).sort_index(ascending=False).iloc[1])
             except: None
@@ -105,7 +106,7 @@ def run(*script_args):
             except: None
             argsdict2['start_date'] = '2017-10-20'
             argsdict2['end_date'] = end_date
-            argsdict2['frequency'] = 'daily'
+            argsdict2['frequency'] = 'weekly'
 
 
             for stock_id in stock_list:
@@ -114,7 +115,7 @@ def run(*script_args):
                 try:
                     df.ix[stock_id, 'col2'] = float(function_list[param.compare_indicator.name](**argsdict2).sort_index(ascending=False).iloc[0])
                 except:
-                    continue
+                    None
             print('complete compare_param')
             df = df.dropna()
             print(df)
