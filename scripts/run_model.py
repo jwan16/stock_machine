@@ -46,7 +46,7 @@ def record_param_name(param_name, param1, param2, param3):
         result = param_name + '(' + param1 + ')'
     return result
 
-stock_list = [add_zero(str(i)) for i in range(1,500)]
+stock_list = [add_zero(i.stock_id) for i in Company.objects.all()]
 function_list = {
     'Moving Average': get_moving_avg,
     'Stochastic(k_fast)': get_stochastic_k_fast,

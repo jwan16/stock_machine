@@ -28,7 +28,7 @@ def Chartviewer_result(request):
     print(period)
     stock_list = input.split(',')
     param = {'fontsize': 12,
-            '15MinDelay': 'T',
+            '15MinDelay': 'N',
             'lang': 1,
             'titlestyle': 1,
             'vol': 1,
