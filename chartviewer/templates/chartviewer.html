@@ -47,6 +47,179 @@
 
             <!-- HK TAB! -->
             <div class="tab-pane active" id="HK">
+                <!-- Search by select -->
+                <span class="section">Search by Category</span>
+                <div class="row">
+                <div class="col-md-3 col-sm-6">
+                  <label for="indices">指數</label>
+                  <select id="indices" class="form-control searching">
+                    <option disabled selected value> 請選擇</option>
+                    <option value="110000">恆生指數</option>
+                    <option value="110001">金融分類</option>
+                    <option value="110002">公用分類</option>
+                    <option value="110003">地產分類</option>
+                    <option value="110004">工商分類</option>
+                    <option value="110030">港中企業</option>
+                    <option value="110010">國企指數</option>
+                    <option value="110050">創業板</option>
+                    <option value="110041">波幅指數</option>
+                    <option value="2000001">上證指數</option>
+                    <option value="2000300">滬深300</option>
+                    <option value="111000">道瓊斯</option>
+                    <option value="111100">納斯達克</option>
+                    <option value="221000">恆生指數期貨&nbsp;(即月)</option>
+                    <option value="221002">恆生指數期貨 (下月)</option>
+                    <option value="221004">小型恆生指數期貨 (即月)</option>
+                    <option value="221003">小型恆生指數期貨 (下月)</option>
+                    <option value="221006">H股指數期貨 (即月)</option>
+                    <option value="221007">H股指數期貨 (下月)</option>
+                    <option value="221310">小型H股指數期貨 (即月)</option>
+                    <option value="221311">小型H股指數期貨 (下月)</option>
+                  </select>
+                </div>
+
+                <div class="col-md-offset-3 col-md-3 col-sm-6">
+                  <label for="stockgroup">股票分類</label>
+                  <select class="form-control" id="stockgroup">
+                    <option disabled selected value> 請選擇</option>
+                    <optgroup label="港股指數">
+                        <option value="hsi">藍籌股</option>
+                        <option value="cei">國企股</option>
+                        <option value="cci">紅籌股</option>
+                        <option value="mlh">恒生中國100</option>
+                        <option value="m25">恒生中國25</option>
+                        <option value="h35">恒生香港35</option>
+                        <option value="hfi">H股金融</option>
+                        <option value="hcl">恒生綜合大型股</option>
+                        <option value="hcm">恒生綜合中型股</option>
+                        <option value="gem">創業板</option>
+                    </optgroup>
+                    <!--<optgroup label="港股ETF">-->
+                        <!--<option value="HKETF1">股票 - 香港</option>-->
+                        <!--<option value="HKETF2">股票 - 中國 (香港上市公司)</option>-->
+                        <!--<option value="HKETF3">股票 - 中國 (中國上市公司)</option>-->
+                        <!--<option value="HKETF4">股票 - 日本</option>-->
+                        <!--<option value="HKETF5">股票 - 亞太區 (日本除外)</option>-->
+                        <!--<option value="HKETF6">股票 - 新興市場</option>-->
+                        <!--<option value="HKETF7">股票 - 環球</option>-->
+                        <!--<option value="HKETF8">股票 - 大中華地區</option>-->
+                        <!--<option value="HKETF9">股票 - 中國（中國概念股）</option>-->
+                        <!--<option value="HKETF10">股票 - 泛亞區（日本及澳紐除外）</option>-->
+                        <!--<option value="HKETF11">股票 - 亞洲</option>-->
+                        <!--<option value="HKETF12">股票 - 中國以外地區</option>-->
+                        <!--<option value="HKETF13">股票 - 歐洲</option>-->
+                        <!--<option value="HKETF14">股票 - 亞洲(日本除外)</option>-->
+                        <!--<option value="HKETF15">股票 - 中國及美國</option>-->
+                        <!--<option value="HKETF16">期貨合約 - 恒指</option>-->
+                        <!--<option value="HKETF17">股票 - 韓國</option>-->
+                        <!--<option value="HKETF18">商品</option>-->
+                        <!--<option value="HKETF19">股票</option>-->
+                        <!--<option value="HKETF20">固定收益</option>-->
+                        <!--<option value="HKETF21">貨幣市場</option>-->
+                        <!--<option value="HKETF22">期貨合約</option>-->
+                    <!--</optgroup>-->
+                    <!--<optgroup label="港股行業">-->
+                        <!--<option value="2033">服飾配件及皮革</option>-->
+                        <!--<option value="3031">廣告</option>-->
+                        <!--<option value="2061">農畜漁產品</option>-->
+                        <!--<option value="3041">航空服務</option>-->
+                        <!--<option value="3042">航空支援</option>-->
+                        <!--<option value="2041">煙酒</option>-->
+                        <!--<option value="0013">替代能源</option>-->
+                        <!--<option value="3012">服裝</option>-->
+                        <!--<option value="3019">汽車零售及維護維修</option>-->
+                        <!--<option value="2011">汽車及零部件</option>-->
+                        <!--<option value="5011">銀行</option>-->
+                        <!--<option value="2081">生物科技</option>-->
+                        <!--<option value="0532">化工產品</option>-->
+                        <!--<option value="0021">煤炭</option>-->
+                        <!--<option value="3046">商用交通工具</option>-->
+                        <!--<option value="8001">綜合企業</option>-->
+                        <!--<option value="6021">建築及裝修</option>-->
+                        <!--<option value="6022">建築材料</option>-->
+                        <!--<option value="2071">電子消費品</option>-->
+                        <!--<option value="3016">美容及個人護理</option>-->
+                        <!--<option value="2045">乳製品</option>-->
+                        <!--<option value="3014">超市/百貨/商城</option>-->
+                        <!--<option value="2044">綜合飲食製造</option>-->
+                        <!--<option value="3024">綜合旅遊、酒店及餐飲</option>-->
+                        <!--<option value="7022">電子商貿及互聯網服務</option>-->
+                        <!--<option value="1007">電氣設備</option>-->
+                        <!--<option value="4001">供電供熱</option>-->
+                        <!--<option value="1003">電子元器件</option>-->
+                        <!--<option value="0536">新能源材料</option>-->
+                        <!--<option value="1005">環保</option>-->
+                        <!--<option value="0533">化肥農藥</option>-->
+                        <!--<option value="2046">食品添加劑及調味料</option>-->
+                        <!--<option value="2032">鞋類</option>-->
+                        <!--<option value="0534">林木業</option>-->
+                        <!--<option value="3051">殯儀</option>-->
+                        <!--<option value="2022">家具及家居用品</option>-->
+                        <!--<option value="3025">博彩</option>-->
+                        <!--<option value="4002">燃氣供應</option>-->
+                        <!--<option value="2051">保健品</option>-->
+                        <!--<option value="3021">酒店及度假村</option>-->
+                        <!--<option value="2021">家用電器</option>-->
+                        <!--<option value="1002">工業用品</option>-->
+                        <!--<option value="6031">基建</option>-->
+                        <!--<option value="5021">保險</option>-->
+                        <!--<option value="2091">進出口貿易</option>-->
+                        <!--<option value="5031">投資及資產管理</option>-->
+                        <!--<option value="7011">資訊科技器材</option>-->
+                        <!--<option value="3026">休閒娛樂</option>-->
+                        <!--<option value="1001">機械裝備及器材</option>-->
+                        <!--<option value="3045">航運及港務</option>-->
+                        <!--<option value="2053">醫療器械及服務</option>-->
+                        <!--<option value="2052">藥品</option>-->
+                        <!--<option value="3032">影視娛樂</option>-->
+                        <!--<option value="3035">綜合媒體企業</option>-->
+                        <!--<option value="0522">有色金屬</option>-->
+                        <!--<option value="5032">其他金融</option>-->
+                        <!--<option value="0511">其他礦物</option>-->
+                        <!--<option value="3052">其他支援服務</option>-->
+                        <!--<option value="2043">包裝食品</option>-->
+                        <!--<option value="0535">造紙</option>-->
+                        <!--<option value="0011">石油及天然氣</option>-->
+                        <!--<option value="0012">石油天然氣設備及服務</option>-->
+                        <!--<option value="0512">貴金屬</option>-->
+                        <!--<option value="1004">印刷及包裝</option>-->
+                        <!--<option value="6011">地產發展</option>-->
+                        <!--<option value="6014">地產投資</option>-->
+                        <!--<option value="6012">物業管理及代理</option>-->
+                        <!--<option value="3044">公用運輸</option>-->
+                        <!--<option value="3033">出版傳媒</option>-->
+                        <!--<option value="6013">房地產投資信託基金</option>-->
+                        <!--<option value="3022">餐飲</option>-->
+                        <!--<option value="3011">零售/貿易</option>-->
+                        <!--<option value="3043">公路及鐵路</option>-->
+                        <!--<option value="7012">衛星及航天科技</option>-->
+                        <!--<option value="5041">證券</option>-->
+                        <!--<option value="7031">半導體</option>-->
+                        <!--<option value="2042">軟飲料</option>-->
+                        <!--<option value="7023">軟件開發</option>-->
+                        <!--<option value="0521">鋼鐵</option>-->
+                        <!--<option value="7021">系統開發及信息科技顧問</option>-->
+                        <!--<option value="7041">綜合科技</option>-->
+                        <!--<option value="3502">電訊及網絡器材</option>-->
+                        <!--<option value="3501">電訊服務</option>-->
+                        <!--<option value="2031">紡織及制衣</option>-->
+                        <!--<option value="2023">玩具</option>-->
+                        <!--<option value="3023">旅遊及觀光</option>-->
+                        <!--<option value="3034">電視廣播</option>-->
+                        <!--<option value="3047">倉儲物流</option>-->
+                        <!--<option value="3015">鐘錶珠寶</option>-->
+                        <!--<option value="4003">水務供應</option>-->
+                    <!--</optgroup>-->
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-4">
+                  <label for="stockgroupsub">股票</label>
+                  <select id="stockgroupsub" class="form-control searching">
+
+                  </select>
+                </div>
+
+                </div>
                 {% csrf_token %}
                 <!-- Search by stock number -->
                 <span class="section">Search by Stock number</span>
@@ -85,10 +258,10 @@
         <span class="section">Period</span>
         <div class="col-md-2"><input type="checkbox" name="period" value=3 /> 30 minutes</div>
         <div class="col-md-2"><input type="checkbox" name="period" value=4 /> 10 days</div>
-        <div class="col-md-2"><input type="checkbox" name="period" value=7 /> 3 months</div>
+        <div class="col-md-2"><input type="checkbox" name="period" value=7 checked/> 3 months</div>
         <div class="col-md-2"><input type="checkbox" name="period" value=9 /> 1 year</div>
         <div class="col-md-2"><input type="checkbox" name="period" value=16 /> 5 years</div>
-        <div class="col-md-2"><input type="checkbox" name="period" value=2059 /> 15 years</div>
+        <div class="col-md-2"><input type="checkbox" name="period" value=2059 checked /> 15 years</div>
     </div>
 
     </div>
@@ -143,6 +316,27 @@ $('#HK_search').click(function () {
   };
   console.log(html);
   document.getElementById("footer").innerHTML = html;
+});
+
+
+$('.searching').on("change", function(){
+  $('#HK_input').val( $(this).find('option:selected').val() );
+  $('#HK_search').click();
+});
+
+$('#stockgroup').on("change", function(){
+  var stockgroup = $(this).find('option:selected').val();
+  $.ajax({
+      url: "/chartviewer/stocklist/",
+      type: "POST",
+      data: {
+          "stockgroup": stockgroup,
+          csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken").val(),
+      },
+      success: function(data){
+           $('#stockgroupsub').html(data);
+      }
+  });
 });
 </script>
 {% endblock %}

@@ -1,0 +1,7 @@
+<select id="" class="form-control searching">
+	<option selected disable>請選擇</option>
+	<option value="{% for stock in stocks %}{{ stock.stock_id }},{% endfor %}">ALL</option>
+	{% for stock in stocks %}
+	<option value="{{ stock.stock_id }}">{{ stock.name }}</option>
+	{% endfor %}
+</select>

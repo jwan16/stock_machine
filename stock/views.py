@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 import urllib
 import bs4 as bs
-
+import json
 # Return current stock price of:
 # DowJones, S&P500, NASDAQ, NYSE, NIKKEI, HSI
 def get_indices():
@@ -37,7 +37,6 @@ def get_indices():
     return result_list
 
 # Create your views here.
-@login_required
 def IndexView(request):
     indices = get_indices()
     print(indices)
@@ -52,3 +51,5 @@ def CreateModel(request):
     model = Model.objects.create(owner = request.user)
     model.save()
     return redirect('/model/'+str(model.model_id))
+
+

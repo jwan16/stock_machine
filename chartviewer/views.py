@@ -79,3 +79,20 @@ def Chartviewer_result(request):
         'result_list': result_list,
     }
     return render(request, 'chartviewer_result.html', context)
+
+def StockList(request):
+    json_file = open('chartviewer/stock_list.json')
+    stock_list = json.load(json_file)
+    stockgroup = request.POST.get('stockgroup')
+    print(stockgroup)
+    stocks = stock_list[stockgroup]
+    result_list = []
+    for stock in stocks:
+        result = {}
+        result['stock_id'] = stock
+        result['name'] = stocks[stock]
+        result_list.append(result)
+    context = {
+        'stocks': result_list
+    }
+    return render(request, "stock_list.html", context)
