@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.template import RequestContext
 from django.shortcuts import render, render_to_response
 from stock.models import Company
+
 import json
 # Create your views here.
 
@@ -81,7 +82,7 @@ def Chartviewer_result(request):
     return render(request, 'chartviewer_result.html', context)
 
 def StockList(request):
-    json_file = open('chartviewer/stock_list.json')
+    json_file = open('fixtures/stock_list.json')
     stock_list = json.load(json_file)
     stockgroup = request.POST.get('stockgroup')
     print(stockgroup)

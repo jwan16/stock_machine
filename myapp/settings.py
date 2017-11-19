@@ -144,3 +144,5 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = 'jasonstockmachine@gmail.com'
 EMAIL_HOST_PASSWORD = 'jason0001'
 EMAIL_USE_SSL = True
+
+FIXTURES_ROOT = os.path.abspath(os.path.dirname(__file__)) + '/fixtures/'
